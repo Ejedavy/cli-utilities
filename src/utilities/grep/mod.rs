@@ -23,10 +23,40 @@ impl Config{
         println!("Performing search");
         let mut result:Vec<String> = Vec::new();
         for line in content.lines(){
-            if line.contains(self.query.as_str()){
+            if line.to_lowercase().contains(self.query.to_lowercase().as_str()){
                 result.push(String::from(line));
             }
         }
         result
+    }
+}
+
+#[cfg(test)]
+mod tests{
+    use super::Config;
+    #[test]
+    fn test_search(){
+        let filename = String::new();
+        let query = String::from("aim");
+       let config = Config{
+        filename  : filename,
+        query : query,
+       };
+       let content = String::from("This is a test content.\nThe aim of this content is to make sure that we are happy.\nCome and enjoy the content");
+       let results = config.search(&content);
+       assert_eq!(results.len(), 1);
+    }
+
+    #[test]
+    fn test_case_insensitive_search(){
+        let filename = String::new();
+        let query = String::from("the");
+       let config = Config{
+        filename  : filename,
+        query : query,
+       };
+       let content = String::from("This is a test content.\nThe aim of this content is to make sure that we are happy.\nCome and enjoy the content");
+       let results = config.search(&content);
+       assert_eq!(results.len(), 2);
     }
 }
