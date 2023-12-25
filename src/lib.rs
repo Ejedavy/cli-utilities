@@ -16,12 +16,15 @@ impl Runnable for Config{
 
 impl  Config {
     pub fn new(args: &Vec<String>) -> Result<impl Runnable, &'static str>{
-        if args.len() < 4{
+        if args.len() < 2{
             return Err("no enough arguments");
         }
         let command = args[1].clone();
         match command.as_str() {
             "grep" => {
+                if args.len() < 4{
+                    return Err("no enough arguments");
+                }
                 return Ok(
                     Config{
                         command_configuration: Box::new(crate::utilities::grep::Config{
@@ -31,6 +34,18 @@ impl  Config {
                         }
                     );
                 },
+            "ls" => {
+                if args.len() < 3{
+                    return Err("no enough arguments");
+                }
+                return Ok(
+                    Config{
+                        command_configuration: Box::new(crate::utilities::ls::Config{
+                                                        path : args[2].clone()
+                                                })
+                        }
+                );
+            }
             _ => {return Err("unimplemented utility");}
         };
     }
