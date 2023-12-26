@@ -44,7 +44,11 @@ mod tests {
             filename: filename,
             query: query,
         };
-        let content = String::from("This is a test content.\nThe aim of this content is to make sure that we are happy.\nCome and enjoy the content");
+        let content = String::from(
+            "This is a test content.\n
+        The aim of this content is to make sure that we are happy.\n
+        Come and enjoy the content",
+        );
         let results = config.search(&content);
         assert_eq!(results.len(), 1);
     }
@@ -57,7 +61,11 @@ mod tests {
             filename: filename,
             query: query,
         };
-        let content = String::from("This is a test content.\nThe aim of this content is to make sure that we are happy.\nCome and enjoy the content");
+        let content = String::from(
+            "This is a test content.\n
+        The aim of this content is to make sure that we are happy.\n
+        Come and enjoy the content",
+        );
         let results = config.search(&content);
         assert_eq!(results.len(), 2);
     }
