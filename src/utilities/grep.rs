@@ -18,7 +18,7 @@ impl Runnable for Config {
 }
 
 impl Config {
-    fn search(&self, content: &String) -> Vec<String> {
+    fn search(&self, content: &str) -> Vec<String> {
         println!("Performing search");
         let mut result: Vec<String> = Vec::new();
         for line in content.lines() {
