@@ -1,22 +1,20 @@
+use cli_utilities::{Config, Runnable};
 use std::{env, process};
 
-use cli_utilities::Runnable;
-
 fn main() {
-    let args : Vec<String> = env::args().collect();
+    let args: Vec<String> = env::args().collect();
+    let config = Config::new(&args);
 
-    let config  = cli_utilities::Config::new(&args);
-    match config{
-        Ok(val) => {
-            if let Err(e) = val.run(){
+    match config {
+        Ok(utility) => {
+            if let Err(e) = utility.run() {
                 println!("{}", e);
                 process::exit(1);
             }
-        },
+        }
         Err(e) => {
             println!("{}", e);
             process::exit(1);
         }
     }
-
 }
