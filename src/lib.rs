@@ -1,52 +1,53 @@
+use crate::utilities::grep;
+use crate::utilities::ls;
 use std::error::Error;
 
 pub trait Runnable {
     fn run(&self) -> Result<(), Box<dyn Error>>;
 }
 
-pub struct Config{
-    pub command_configuration : Box<dyn Runnable>,
+pub struct Config {
+    pub command_configuration: Box<dyn Runnable>,
 }
 
-impl Runnable for Config{
+impl Runnable for Config {
     fn run(&self) -> Result<(), Box<dyn Error>> {
-       self.command_configuration.run()
+        self.command_configuration.run()
     }
 }
 
-impl  Config {
-    pub fn new(args: &Vec<String>) -> Result<impl Runnable, &'static str>{
-        if args.len() < 2{
+impl Config {
+    pub fn new(args: &Vec<String>) -> Result<impl Runnable, &'static str> {
+        if args.len() < 2 {
             return Err("no enough arguments");
         }
         let command = args[1].clone();
         match command.as_str() {
             "grep" => {
-                if args.len() < 4{
+                if args.len() < 4 {
                     return Err("no enough arguments");
                 }
-                return Ok(
-                    Config{
-                        command_configuration: Box::new(crate::utilities::grep::Config{
-                                                    filename : args[3].clone(),
-                                                    query: args[2].clone()
-                                                })
-                        }
-                    );
-                },
-            "ls" => {
-                if args.len() < 3{
-                    return Err("no enough arguments");
-                }
-                return Ok(
-                    Config{
-                        command_configuration: Box::new(crate::utilities::ls::Config{
-                                                        path : args[2].clone()
-                                                })
-                        }
-                );
+
+                return Ok(Config {
+                    command_configuration: Box::new(grep::Config {
+                        filename: args[3].clone(),
+                        query: args[2].clone(),
+                    }),
+                });
             }
-            _ => {return Err("unimplemented utility");}
+            "ls" => {
+                if args.len() < 3 {
+                    return Err("no enough arguments");
+                }
+                return Ok(Config {
+                    command_configuration: Box::new(ls::Config {
+                        path: args[2].clone(),
+                    }),
+                });
+            }
+            _ => {
+                return Err("unimplemented utility");
+            }
         };
     }
 }
