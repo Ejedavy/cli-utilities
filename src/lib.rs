@@ -2,6 +2,8 @@ use crate::utilities::grep;
 use crate::utilities::ls;
 use std::error::Error;
 
+pub mod utilities;
+
 pub trait Runnable {
     fn run(&self) -> Result<(), Box<dyn Error>>;
 }
@@ -52,4 +54,3 @@ impl Config {
     }
 }
 
-pub mod utilities;
