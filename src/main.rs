@@ -3,7 +3,7 @@ use std::{env, process};
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    let config = Config::new(&args);
+    let config = Config::build(&args);
 
     match config {
         Ok(utility) => {

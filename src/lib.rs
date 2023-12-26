@@ -19,7 +19,7 @@ impl Runnable for Config {
 }
 
 impl Config {
-    pub fn new(args: &Vec<String>) -> Result<impl Runnable, &'static str> {
+    pub fn build(args: &Vec<String>) -> Result<impl Runnable, &'static str> {
         if args.len() < 2 {
             return Err("no enough arguments");
         }
@@ -27,30 +27,27 @@ impl Config {
         match command.as_str() {
             "grep" => {
                 if args.len() < 4 {
-                    return Err("no enough arguments");
+                    Err("no enough arguments")
+                } else {
+                    Ok(Config {
+                        command_configuration: Box::new(grep::Config {
+                            filename: args[3].clone(),
+                            query: args[2].clone(),
+                        }),
+                    })
                 }
-
-                return Ok(Config {
-                    command_configuration: Box::new(grep::Config {
-                        filename: args[3].clone(),
-                        query: args[2].clone(),
-                    }),
-                });
             }
             "ls" => {
                 if args.len() < 3 {
                     return Err("no enough arguments");
                 }
-                return Ok(Config {
+                Ok(Config {
                     command_configuration: Box::new(ls::Config {
                         path: args[2].clone(),
                     }),
-                });
+                })
             }
-            _ => {
-                return Err("unimplemented utility");
-            }
-        };
+            _ => Err("unimplemented utility"),
+        }
     }
 }
-
